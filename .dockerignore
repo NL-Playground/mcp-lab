@@ -1,0 +1,12 @@
+# demo-mcp 映像建置只需要 server.py + requirements.txt
+.git
+.venv
+__pycache__
+**/__pycache__
+*.pyc
+.env
+LAB-docs
+demo-app
+demo-db
+docker-compose*.yml
+README.md

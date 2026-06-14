@@ -1,0 +1,14 @@
+{
+  // GitHub Copilot 的 MCP 設定:HTTP transport 用 type + url,根鍵為 servers
+  // demo-mcp 以 Docker 在本機模擬遠端,AI Client 連 http://localhost:8000/mcp
+  "servers": {
+    "demo-mcp": {
+      "type": "http",
+      "url": "http://localhost:8000/mcp"
+    },
+    "fastmcp-official": {
+      "type": "http",
+      "url": "https://gofastmcp.com/mcp"
+    }
+  }
+}

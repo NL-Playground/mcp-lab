@@ -1,0 +1,51 @@
+services:
+  postgres:
+    image: postgres:18.4
+    container_name: postgres
+    environment:
+      POSTGRES_USER: "${POSTGRES_USER:-postgres}"
+      POSTGRES_PASSWORD: "${POSTGRES_PASSWORD:-postgres}"
+      POSTGRES_DB: "${POSTGRES_DB:-user_management_demo}"
+    ports:
+      - "5432:5432"
+    volumes:
+      - pg-data:/var/lib/postgresql
+      # Postgres 首次啟動會自動依檔名順序執行此目錄下的 *.sql
+      - ./demo-db/init:/docker-entrypoint-initdb.d:ro
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER:-postgres} -d $${POSTGRES_DB:-user_management_demo}"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 20s
+
+  demo-app:
+    build: ./demo-app
+    container_name: demo-app
+    environment:
+      DATABASE_URL: "postgresql://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-postgres}@postgres:5432/${POSTGRES_DB:-user_management_demo}"
+    ports:
+      - "8080:8080"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: unless-stopped
+
+  demo-mcp:
+    build: .
+    container_name: demo-mcp
+    environment:
+      DEMO_APP_URL: "http://demo-app:8080"
+      DEMO_APP_EMAIL: "${DEMO_APP_EMAIL:-alice@demo.local}"
+      DEMO_APP_PASSWORD: "${DEMO_APP_PASSWORD:-Admin@123}"
+      MCP_HOST: "0.0.0.0"
+      MCP_PORT: "8000"
+    ports:
+      - "8000:8000"                   # 對外: AI Client 連 http://localhost:8000/mcp
+    depends_on:
+      - demo-app
+    restart: unless-stopped
+
+volumes:
+  pg-data:

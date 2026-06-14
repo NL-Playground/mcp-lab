@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>demo-app · 使用者管理</title>
+  <link rel="stylesheet" href="/style.css" />
+</head>
+<body>
+  <!-- 登入畫面 -->
+  <section id="login-view" class="center hidden">
+    <form id="login-form" class="card login-card">
+      <h1>使用者管理 Demo</h1>
+      <p class="muted">請使用 demo-db 中的帳號登入</p>
+      <label>Email
+        <input type="email" id="login-email" value="alice@demo.local" required />
+      </label>
+      <label>密碼
+        <input type="password" id="login-password" value="Admin@123" required />
+      </label>
+      <button type="submit">登入</button>
+      <p id="login-error" class="error"></p>
+      <details class="hints">
+        <summary>示範帳號</summary>
+        <ul>
+          <li>alice@demo.local / Admin@123 (admin)</li>
+          <li>bob@demo.local / Write@123 (write)</li>
+          <li>carol@demo.local / Read@123 (read)</li>
+        </ul>
+      </details>
+    </form>
+  </section>
+
+  <!-- 主畫面 -->
+  <section id="app-view" class="hidden">
+    <header class="topbar">
+      <h1>使用者管理</h1>
+      <div class="userbox">
+        <span id="who"></span>
+        <button id="logout-btn" class="ghost">登出</button>
+      </div>
+    </header>
+
+    <main>
+      <div class="toolbar">
+        <h2>使用者清單</h2>
+        <button id="new-user-btn" class="primary">+ 新增使用者</button>
+      </div>
+      <div class="table-wrap">
+        <table id="users-table">
+          <thead>
+            <tr>
+              <th>ID</th><th>姓名</th><th>Email</th><th>權限</th>
+              <th>部門</th><th>狀態</th><th>最後登入</th><th>操作</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+      <p id="app-msg" class="msg"></p>
+    </main>
+  </section>
+
+  <!-- 新增使用者 Modal -->
+  <div id="create-modal" class="modal-backdrop hidden">
+    <form id="create-form" class="card modal">
+      <h2>新增使用者</h2>
+      <label>姓名 <input id="c-name" required /></label>
+      <label>Email <input id="c-email" type="email" required /></label>
+      <label>密碼 <input id="c-password" type="password" required /></label>
+      <label>權限 <select id="c-role"></select></label>
+      <label>部門 <select id="c-dept"></select></label>
+      <p class="error" id="create-error"></p>
+      <div class="modal-actions">
+        <button type="button" class="ghost" id="create-cancel">取消</button>
+        <button type="submit" class="primary">建立</button>
+      </div>
+    </form>
+  </div>
+
+  <script src="/app.js"></script>
+</body>
+</html>
