@@ -1,0 +1,15 @@
+{
+  "hooks": {
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"$CLAUDE_PROJECT_DIR/.claude/hooks/check_pii.py\"",
+            "statusMessage": "檢查 prompt 是否含個人資訊..."
+          }
+        ]
+      }
+    ]
+  }
+}
